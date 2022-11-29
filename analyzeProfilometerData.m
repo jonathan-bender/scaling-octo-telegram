@@ -1,6 +1,9 @@
 
 function analyzeProfilometerData(sourcePath, range)
 
+% smoothing
+SMOOTHING = 35;
+
 % read data
 opts = delimitedTextImportOptions('NumVariables', 5);
 opts.DataLines = [2, Inf];
@@ -29,7 +32,7 @@ parameters = table2array(tableParameters);
 xScale = parameters(2,2);
 
 columnCount = size(data,1);
-read = data(:,2);
+read = -data(:,2);
 
 if size(range,2) > 1
     roundedRange = round((range(1):range(2))/xScale);
@@ -40,6 +43,19 @@ end
 linearParams = polyfit(1:columnCount, read, 1);
 read = read - polyval(linearParams, 1:columnCount);
 
+% smooth
+smoothed = smooth(read, SMOOTHING);
+roughness = abs(read - smoothed);
+avgRoughness = 2 * prctlie(roughness, 98);
+stdRoughness = std(roughness);
 
+disp(['Average Roughness: ', num2str(avgRoughness), ' microns. Standard Deviation: ', num2str(stdRoughness)]);
+
+totalWidth = xScale * columnCount;
+widthAxis = linspace(0, totalWidth, columnCount);
+plot(widthAxis, read);
+xlabel([num2str(totalWidth) ' mm']);
+ylabel('Height (microns)');
+title(['Profile' num2str(midRow)]);
 
 end
