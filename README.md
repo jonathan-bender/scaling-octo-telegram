@@ -8,11 +8,11 @@ The graph produced is the profile of the surface. The x axis being the length of
 
 The program also fixes the slope of the surface against the profilometer, to make sure that the reading is of a flat surface.
 
-The roughness is defined as the average "peak to peak" difference in each 0.5 millimeter of the surface. The standard deviation of that distribution is also displayed in the console.
+The roughness is defined as the average "peak to peak" hieght difference in each small interval of the surface. The standard deviation of that distribution is also displayed in the console.
 
 ## Format of the Profilometer Data
 
-The profilometer results are two .txt files. One containing the reading data and the other containing parameters of the reading (distance between points, scales, etc.).
+The profilometer results are two ".txt" files. One containing the reading data and the other containing parameters of the reading (distance between points, scales, etc.).
 The path of the original data should be a valid .txt file without the .txt suffix. the other file should have a matching name with a suffix "_parameters".
 For example, the path of the data may be: "C:\profilometer\reading.txt" and the parameters file is: "C:\profilometer\reading_parameters.txt".
 
@@ -41,3 +41,5 @@ range - used to analyze only a portion of the surface, for example [10 50] will 
 ### Usage Example
 
 analyzeProfilometerData('C:\profilometer\reading', [])
+
+This call will read the parameters file at 'C:\profilometer\reading_parameters.txt' and the reading from the file at 'C:\profilometer\reading.txt'.
