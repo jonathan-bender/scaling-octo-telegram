@@ -2,7 +2,7 @@
 function analyzeProfilometerData(sourcePath, range)
 
 % smoothing
-SMOOTHING = 35;
+SMOOTHING = 15;
 
 % read data
 opts = delimitedTextImportOptions('NumVariables', 5);
@@ -33,29 +33,52 @@ xScale = parameters(2,2);
 
 columnCount = size(data,1);
 read = -data(:,2);
+totalWidth = xScale * columnCount;
 
 if size(range,2) > 1
-    roundedRange = round((range(1):range(2))/xScale);
+    roundedRange = (round(range(1)/xScale)+1):round(range(2)/xScale);
     read = read(roundedRange);
+    columnCount = size(read,1);
+    totalWidth = xScale * columnCount;
 end
+
+
 
 % fix slope
 linearParams = polyfit(1:columnCount, read, 1);
-read = read - polyval(linearParams, 1:columnCount);
+read = read - polyval(linearParams, 1:columnCount)';
+
+for i=1:columnCount
+    if read(i) > 10
+        read(i)=0;
+    end
+    
+    if read(i) < -10
+        read(i)=0;
+    end
+end
 
 % smooth
 smoothed = smooth(read, SMOOTHING);
 roughness = abs(read - smoothed);
-avgRoughness = 2 * prctlie(roughness, 98);
+avgRoughness = 2 * prctile(roughness, 98);
 stdRoughness = std(roughness);
 
 disp(['Average Roughness: ', num2str(avgRoughness), ' microns. Standard Deviation: ', num2str(stdRoughness)]);
 
-totalWidth = xScale * columnCount;
 widthAxis = linspace(0, totalWidth, columnCount);
-plot(widthAxis, read);
+figure;
+tiledlayout(2,1);
+nexttile;
+plot(widthAxis, smooth(read,1));
 xlabel([num2str(totalWidth) ' mm']);
 ylabel('Height (microns)');
-title(['Profile' num2str(midRow)]);
+title(['Profile']);
+
+nexttile;
+plot(widthAxis, smooth(roughness,1));
+xlabel([num2str(totalWidth) ' mm']);
+ylabel('Roughness (microns)');
+title(['Roughness']);
 
 end
