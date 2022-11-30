@@ -60,8 +60,8 @@ end
 
 % smooth
 smoothed = smooth(read, SMOOTHING);
-roughness = abs(read - smoothed);
-avgRoughness = 2 * prctile(roughness, 80);
+roughness = 2 * abs(read - smoothed);
+avgRoughness = prctile(roughness, 80);
 stdRoughness = std(roughness);
 
 disp(['Average Roughness: ', num2str(avgRoughness), ' microns. Standard Deviation: ', num2str(stdRoughness)]);
@@ -70,13 +70,13 @@ widthAxis = linspace(0, totalWidth, columnCount);
 
 tiledlayout(2,1);
 nexttile;
-plot(widthAxis, smooth(read,41));
+plot(widthAxis, smooth(read,1));
 xlabel([num2str(totalWidth) ' mm']);
 ylabel('Height (microns)');
 title(['Profile']);
 
 nexttile;
-plot(widthAxis, smooth(roughness,101));
+plot(widthAxis, smooth(roughness,401));
 xlabel([num2str(totalWidth) ' mm']);
 ylabel('Roughness (microns)');
 title(['Roughness']);
