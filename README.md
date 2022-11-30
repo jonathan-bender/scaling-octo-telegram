@@ -1,7 +1,10 @@
 # Profilometer Data Reading
 This code analyzes profilometer readings. A single method that generates:
-A) A plot of the profile
-B) A plot of the roughness
+
+a) A plot of the profile
+
+b) A plot of the roughness
+
 And displays the average roughness and its standard deviation.
 
 ## Overview
