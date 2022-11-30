@@ -1,5 +1,8 @@
 # Profilometer Data Reading
-This code analyzes profilometer readings. A single method that plots the reading and outputs the average roughness and its standard deviation.
+This code analyzes profilometer readings. A single method that generates:
+A) A plot of the profile
+B) A plot of the roughness
+And displays the average roughness and its standard deviation.
 
 ## Overview
 The profilometer readings are two files. One containing the actual reading and the other containing relevant parameters of the reading.
@@ -17,9 +20,13 @@ The path of the original data should be a valid .txt file without the .txt suffi
 For example, the path of the data may be: "C:\profilometer\reading.txt" and the parameters file is: "C:\profilometer\reading_parameters.txt".
 
 The reading is a table separated by tabs with the following format:
+Counter	Altitude (µm)	Encoder1 (µm)	Encoder2 (µm)	Row number
+37	623.381	-1.4	0	1
+38	623.3406	-1.4	0	1
+39	623.3882	-1.4	0	1
+40	623.269	-1.4	0	1
 
-
-The parameters is also a table separated by tabs:
+The parameters are separated by line breaks;
 Pen: 1000 µ
 Frequency = 400 Hz
 X distance = +30.00000 mm
@@ -29,7 +36,7 @@ Number of rows = 10
 Row step = 0.001 mm
 Y velocity = 1.0000 mm/s
 
-Note: while the reading file should contain a "row" number, this program only supports readings of a single row.
+Note: while the reading file should contain a "Row number", this program only supports readings of a single row.
 
 ## Usage
 
